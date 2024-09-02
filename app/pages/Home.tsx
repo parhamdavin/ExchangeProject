@@ -1,6 +1,9 @@
+import { useQuery } from "react-query";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Table from "../components/Table";
+import { DataTablesType } from "../types/DataTableTypes";
+import CryptoDiscription from "../components/CryptoDiscription";
 
 const Home = () => {
   return (
@@ -8,7 +11,9 @@ const Home = () => {
       <Header />
       <div className="flex-grow">
         <Table />
-        {/* Other content here */}
+        <div className="mt-12">
+          <CryptoDiscription />
+        </div>
       </div>
       <Footer />
     </div>
