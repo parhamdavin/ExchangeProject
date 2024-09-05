@@ -5,6 +5,7 @@ export interface DataTablesType {
     price: string;
     daily_change_percent: string;
     buy_irt_price: string;
+    irt_price:string
     sell_irt_price: string;
     icon:string;
   }

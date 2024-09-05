@@ -5,11 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import SearchBox from "./SearchBox";
 import GetData from "../utils/GetData";
+import { useRouter } from "next/navigation";
 import debounce from "lodash.debounce";
 import { DataTablesType } from "../types/DataTableTypes";
+import Link from "next/link"; // اضافه کردن Link
 
 const fetchData = async (): Promise<DataTablesType[]> => {
   const result: DataTablesType[] = await GetData();
+  console.log(result)
   return result;
 };
 
@@ -17,14 +20,13 @@ const Table: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const { data, isLoading, error } = useQuery<DataTablesType[]>({
     queryKey: ["data"],
     queryFn: fetchData,
     staleTime: 5 * 60 * 1000,
   });
-
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       setSearchTerm(term);
@@ -68,30 +70,40 @@ const Table: React.FC = () => {
     setExpandedRow(expandedRow === id ? null : id);
   };
 
-  if (isLoading)   return (
+  if (isLoading)
+    return (
       <div className="flex justify-center items-center h-screen">
-        <iframe 
-          src="https://giphy.com/embed/l3nWhI38IWDofyDrW" 
-          width="480" 
-          height="480" 
-          style={{ border: 'none' }} 
-          frameBorder="0" 
-          className="giphy-embed" 
+        <iframe
+          src="https://giphy.com/embed/l3nWhI38IWDofyDrW"
+          width="480"
+          height="480"
+          style={{ border: "none" }}
+          frameBorder="0"
+          className="giphy-embed"
           allowFullScreen
         ></iframe>
       </div>
     );
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
+  const router = useRouter();
+
+  const handleTradeClick = (item: DataTablesType) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedItem", JSON.stringify(item));
+      router.push(`/trade/${item.id}`);
+    }
+  };
+  
 
   return (
     <div className="container mx-auto p-5">
-     <h1 className="text-3xl font-bold text-center mb-5 text-gray-800">
-    لیست قیمت لحظه‌ای ارزهای دیجیتال
+      <h1 className="text-3xl font-bold text-center mb-5 text-gray-800">
+        لیست قیمت لحظه‌ای ارزهای دیجیتال
       </h1>
-      <div className="overflow-x-auto">
-        <div className="shadow-lg rounded-lg p-2 bg-white max-w-screen-lg mx-auto">
-          <table className="min-w-full bg-white text-base border-collapse">
-            <thead className="bg-slate-200 text-gray-700 rounded-md">
+      <div className="rounded-3xl overflow-hidden max-w-screen-lg mx-auto">
+        <div className="p-2 rounded-3xl bg-white">
+          <table className="min-w-full bg-white text-base border-collapse shadow-lg rounded-3xl">
+            <thead className="bg-slate-200 text-gray-700">
               <tr>
                 <th className="p-4 border-b border-gray-200">نام رمز ارز</th>
                 <th className="p-4 border-b border-gray-200">ارزش دلاری</th>
@@ -133,10 +145,13 @@ const Table: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 text-center text-lg">{item.price}</td>
+                    <td className="p-4 text-center text-lg">
+                      {parseFloat(item.price).toLocaleString()}
+                    </td>
                     <td className="p-4 text-center text-lg">
                       <span
                         className={
+                          item.daily_change_percent &&
                           item.daily_change_percent.startsWith("+")
                             ? "text-green-500"
                             : "text-red-500"
@@ -146,35 +161,48 @@ const Table: React.FC = () => {
                       </span>
                     </td>
                     <td className="p-4 text-center text-lg hidden md:table-cell">
-                      {item.buy_irt_price.toLocaleString()}
+                      {parseFloat(
+                        item.buy_irt_price.toString()
+                      ).toLocaleString()}
                     </td>
                     <td className="p-4 text-center text-lg hidden md:table-cell">
-                      {item.sell_irt_price}
+                      {parseFloat(
+                        item.sell_irt_price.toString()
+                      ).toLocaleString()}
                     </td>
                     <td className="p-4 text-center hidden md:table-cell">
-                      <button className="bg-blue-600 text-white py-2 px-11 rounded-lg hover:bg-blue-800 transition-colors duration-200">
-                        معامله
-                      </button>
+                    <button
+      onClick={() => handleTradeClick(item)}
+      className="bg-blue-600 text-white py-2 px-11 rounded-lg hover:bg-blue-800 transition-colors duration-200"
+    >
+      معامله
+    </button>
                     </td>
                   </tr>
                   {expandedRow === item.id.toString() && (
                     <tr className="bg-white md:hidden">
                       <td colSpan={3} className="p-4 text-center">
-                        <div className="mb-2 text-gray-600">
-                          <p>
-                          خرید از والت:   
-                          </p>
-                          <p>
-
-                          </p>{item.buy_irt_price}
-                          خرید از والت:      
+                        <div className="grid grid-cols-2 gap-y-6 text-gray-600 mb-4">
+                          <div className="text-right">
+                            <p>خرید از والت:</p>
+                          </div>
+                          <div className="text-left">
+                            <p>{Number(item.buy_irt_price).toLocaleString()}</p>
+                          </div>
+                          <div className="text-right">
+                            <p>فروش به والت:</p>
+                          </div>
+                          <div className="text-left">
+                            <p>
+                              {Number(item.sell_irt_price).toLocaleString()}
+                            </p>
+                          </div>
                         </div>
-                        <div className="mb-2 text-gray-600">
-                          فروش به والت: {item.sell_irt_price}
-                        </div>
-                        <button className="bg-blue-600 text-white py-2 px-20 rounded-lg hover:bg-blue-800 transition-colors duration-200">
-                          معامله
-                        </button>
+                        <Link href={`/trade/${item.id}`}>
+                          <button className="bg-blue-600 text-white py-2 px-20 rounded-lg hover:bg-blue-800 transition-colors duration-200 mt-6">
+                            معامله
+                          </button>
+                        </Link>
                       </td>
                     </tr>
                   )}
@@ -206,4 +234,4 @@ const Table: React.FC = () => {
   );
 };
 
-export default React.memo(Table);
+export default Table;

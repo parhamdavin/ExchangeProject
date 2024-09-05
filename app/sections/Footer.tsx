@@ -1,11 +1,15 @@
 import Image from "next/image";
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  className?: string;
+}
+
+
+const Footer = ({ className }:FooterProps) => {
   return (
-    <div className="bg-blue-900 text-white">
+    <div className={`bg-blue-900 ${className} text-white`}>
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 justify-between">
-          {/* بخش اول: لوگو و توضیحات */}
           <div className="mb-7">
             <Image
               className="mb-4"
@@ -24,10 +28,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* خط نازک جدا کننده */}
           <hr className="block lg:hidden border-t border-gray-500 mb-7" />
 
-          {/* بخش دوم: لینک های مرتبط */}
           <div className="mb-11 flex flex-col">
             <h2 className="text-2xl font-bold mb-7">لینک های مرتبط</h2>
             <ul className="space-y-2 mt-0">
@@ -58,8 +60,6 @@ const Footer: React.FC = () => {
               </li>
             </ul>
           </div>
-
-          {/* بخش سوم: لینک‌های دیگر */}
           <div className="mb-11 flex flex-col">
             <div className="flex-1">
               <h2 className="text-2xl font-bold mb-7"></h2>
@@ -93,7 +93,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* بخش چهارم: تبادل ارز */}
           <div className="mb-11 flex flex-col">
             <h2 className="text-2xl font-bold mb-7">تبادل ارز</h2>
             <ul className="space-y-2 mt-0">
@@ -124,8 +123,6 @@ const Footer: React.FC = () => {
               </li>
             </ul>
           </div>
-
-          {/* بخش پنجم: لینک‌های دیگر */}
           <div className="hidden md:flex mb-11 flex flex-col">
             <div className="flex-1">
               <h2 className="text-2xl font-bold mb-7"></h2>
@@ -159,8 +156,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
-
-        {/* بخش خط نازک و شبکه‌های اجتماعی */}
         <div className="mt-12">
           <hr className="border-t border-gray-500 mb-6" />
           <div className="flex flex-col lg:flex-row justify-between items-center">

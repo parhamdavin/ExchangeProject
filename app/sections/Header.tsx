@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+interface HeaderProps {
+  className?: string;
+}
 
-const Header = () => {
+
+const Header = ({ className }:HeaderProps) => {
   return (
-    <header>
+    <header className={` ${className}`}>
       <nav className="bg-slate-100 border-gray-100 px-4 lg:px-6 py-2.5 dark:bg-gray-800 rounded-md">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link href="/home" className="flex items-center">

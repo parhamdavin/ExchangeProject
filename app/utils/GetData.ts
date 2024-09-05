@@ -7,7 +7,7 @@ async function GetData() {
   const result = await response.json();
   
   // اگر نتیجه یک شیء است و آرایه داده‌ها در `items` قرار دارد:
-  const data: DataTablesType[] = result.items; // این خط را با توجه به فرمت واقعی API تغییر دهید.
+  const data: DataTablesType[] = result.items;
   
   return data
 }

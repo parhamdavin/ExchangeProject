@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+import Header from "./sections/Header";
 import Home from "./pages/Home"
 
 const Page =()=>{
