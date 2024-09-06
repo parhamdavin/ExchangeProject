@@ -1,6 +1,7 @@
 export interface DataTablesType {
     id: number;
     fa_name: string;
+    about:string
     en_name: string;
     price: string;
     daily_change_percent: string;

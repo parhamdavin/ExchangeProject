@@ -8,15 +8,15 @@ import GetData from "../utils/GetData";
 import { useRouter } from "next/navigation";
 import debounce from "lodash.debounce";
 import { DataTablesType } from "../types/DataTableTypes";
-import Link from "next/link"; // اضافه کردن Link
+import Link from "next/link";
 
 const fetchData = async (): Promise<DataTablesType[]> => {
   const result: DataTablesType[] = await GetData();
-  console.log(result)
+  console.log(result);
   return result;
 };
 
-const Table: React.FC = () => {
+const Table = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
@@ -93,7 +93,6 @@ const Table: React.FC = () => {
       router.push(`/trade/${item.id}`);
     }
   };
-  
 
   return (
     <div className="container mx-auto p-5">
@@ -171,12 +170,12 @@ const Table: React.FC = () => {
                       ).toLocaleString()}
                     </td>
                     <td className="p-4 text-center hidden md:table-cell">
-                    <button
-      onClick={() => handleTradeClick(item)}
-      className="bg-blue-600 text-white py-2 px-11 rounded-lg hover:bg-blue-800 transition-colors duration-200"
-    >
-      معامله
-    </button>
+                      <button
+                        onClick={() => handleTradeClick(item)}
+                        className="bg-blue-600 text-white py-2 px-11 rounded-lg hover:bg-blue-800 transition-colors duration-200"
+                      >
+                        معامله
+                      </button>
                     </td>
                   </tr>
                   {expandedRow === item.id.toString() && (
