@@ -3,6 +3,7 @@ import Discussion from "@/app/components/Discussion";
 import Image from "next/image";
 import { DataTablesType } from "@/app/types/DataTableTypes";
 import { useEffect, useState } from "react";
+import MyChart from "@/app/components/MyChart";
 
 const TradePage = () => {
   const [item, setItem] = useState<DataTablesType | null>(null);
@@ -99,12 +100,9 @@ const TradePage = () => {
         </select>
       </div> */}
 
-      {/*  <MyChart
-        irtPrice={Number(item.irt_price)}
-        usdPrice={Number(item.price)}
-        selectedPeriod={selectedPeriod}
-      /> */}
-
+        <MyChart
+        currency_code={item.currency_code}
+      /> 
       {/* FAQ Section */}
       <div className="relative bg-white px-4 py-8 md:px-8 md:py-12 max-w-screen-lg mx-auto">
         <h1 className="text-xl md:text-2xl font-extrabold text-right text-black mb-4 md:mb-6">

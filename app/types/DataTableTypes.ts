@@ -3,6 +3,7 @@ export interface DataTablesType {
     fa_name: string;
     about:string
     en_name: string;
+    currency_code:string
     price: string;
     daily_change_percent: string;
     buy_irt_price: string;
