@@ -84,8 +84,9 @@ const Table = () => {
         ></iframe>
       </div>
     );
+    const router = useRouter();
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
-  const router = useRouter();
+  
 
   const handleTradeClick = (item: DataTablesType) => {
     if (typeof window !== "undefined") {
